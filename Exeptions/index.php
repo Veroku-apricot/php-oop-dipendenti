@@ -24,7 +24,7 @@
 				}
 				public function setName($name) {
 					if (strlen($name)<3) {
-						throw new Exception('at least three letters');
+						throw new Exception('must be at least three letters long');
 					}
 					$this -> name = $name;
 				}
@@ -33,9 +33,8 @@
 				}
 				public function setLastName($lastname) {
 					if (strlen($lastname)<3) {
-						throw new Exception('at least three letters');
+						throw new Exception('must be at least three letters long');
 					}
-
 					$this -> lastname = $lastname;
 				}
 				public function getBirthday() {
@@ -61,10 +60,10 @@
 			}
 			// Try
 			try {
-				$p1 = new Person('Riee', 'Rossi', '01.01.1990', '123');
+				$p1 = new Person('Pe', 'Prova', '01.01.1990', '123');
 				echo $p1 . '<br><br>';
 			} catch (Exception $e) {
-				echo 'Name not valid <br>' . $e->getMessage();
+				echo 'Name or lastname not valid <br>' . $e->getMessage() . '<br><br>';
 			}
 
 			class Employee extends Person  {
@@ -83,6 +82,9 @@
 					return $this -> ral;
 				}
 				public function setRal($ral) {
+					if ($ral < 10000 || $ral > 100000) {
+						throw new Exception('must be a number between 10.000 and 100.000');
+					}
 					$this -> ral = $ral;
 				}
 				public function getTask() {
@@ -105,6 +107,22 @@
 						. 'Id: ' . $this -> getId();
 				}
 			}
+
+			// Employee try
+			try {
+				$empl = new Employee('Employee', 'Prova', '06.11.1995', '123', 10, 'Task', 'Id');
+				echo $empl . '<br><br>';
+			} catch (Exception $e) {
+				echo 'Ral not valid <br>' . $e->getMessage() . '<br><br>';
+			}
+
+			$employee1 = new Employee('Rita', 'Rossi', '01.01.1990', '123', 12000, 'Task', 'Id');
+			$employee2 = new Employee('Link', 'Smith', '27.10.1987', '123', 15500, 'Task', 'Id');
+			$employee3 = new Employee('Retsuko', 'Aggre', '06.11.1995', '123', 10000, 'Task', 'Id');
+
+			echo $employee1 . '<br><br>'
+					. $employee2 . '<br><br>'
+					. $employee3 . '<br><br>';
 
 			class Boss extends Employee {
 				private $profit;
@@ -134,6 +152,9 @@
 					return $this -> employees;
 				}
 				public function setEmployees($employees) {
+					if (empty($employees)) {
+						throw new Exception('must be present at least one employee');
+					}
 					$this -> employees = $employees;
 				}
 
@@ -158,15 +179,17 @@
 				}
 			}
 
-			$employee1 = new Employee('Rita', 'Rossi', '01.01.1990', '123', 'Ral', 'Task', 'Id');
-			$employee2 = new Employee('Link', 'Smith', '27.10.1987', '123', 'Ral', 'Task', 'Id');
-			$employee3 = new Employee('Retsuko', 'Aggre', '06.11.1995', '123', 'Ral', 'Task', 'Id');
-			$boss = new Boss('Luigi', 'Verdi', '10.03.1986', '123', 'Ral', 'Task', 'Id', 'Profit', 'Marketing', [$employee1, $employee2, $employee3] );
+			// Boss try
+			try {
+				$bss = new Boss('Boss', 'Prova', '10.03.1986', '123', 100000, 'Task', 'Id', 'Profit', 'Marketing', []);
+				echo $bss . '<br><br>';
+			} catch (Exception $e) {
+				echo 'Employees not valid <br>' . $e->getMessage() . '<br><br>';
+			}
 
-			echo $employee1 . '<br><br>'
-					. $employee2 . '<br><br>'
-					. $employee3 . '<br><br>'
-					. $boss . '<br><br>';
+			$boss = new Boss('Luigi', 'Verdi', '10.03.1986', '123', 99999, 'Task', 'Id', 'Profit', 'Marketing', [$employee1, $employee2, $employee3]);
+
+			echo $boss . '<br><br>';
 
 		 ?>
 	</body>
