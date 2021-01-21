@@ -83,7 +83,7 @@
 				}
 				public function setRal($ral) {
 					if ($ral < 10000 || $ral > 100000) {
-						throw new Exception('must be a number between 10.000 and 100.000');
+						throw new Exception('Ral: must be a number between 10.000 and 100.000');
 					}
 					$this -> ral = $ral;
 				}
@@ -99,6 +99,12 @@
 				public function setId($id) {
 					$this -> id = $id;
 				}
+				public function setSecurLvl($securlvl) {
+					if($securlvl < 1 || $securlvl > 5){
+						throw new Exception('Security level: must be a number between 1 and 5');
+					}
+					parent::setSecurLvl($securlvl);
+				}
 
 				public function __toString() {
 					return parent::__toString() . '<br>'
@@ -108,26 +114,11 @@
 				}
 			}
 
-			// Employee try
-			try {
-				$empl = new Employee('Employee', 'Prova', '06.11.1995', '123', 10, 'Task', 'Id');
-				echo $empl . '<br><br>';
-			} catch (Exception $e) {
-				echo 'Ral not valid <br>' . $e->getMessage() . '<br><br>';
-			}
-
-			$employee1 = new Employee('Rita', 'Rossi', '01.01.1990', '123', 12000, 'Task', 'Id');
-			$employee2 = new Employee('Link', 'Smith', '27.10.1987', '123', 15500, 'Task', 'Id');
-			$employee3 = new Employee('Retsuko', 'Aggre', '06.11.1995', '123', 10000, 'Task', 'Id');
-
-			echo $employee1 . '<br><br>'
-					. $employee2 . '<br><br>'
-					. $employee3 . '<br><br>';
-
 			class Boss extends Employee {
 				private $profit;
 				private $department;
 				private $employees;
+				private $securlvl;
 
 				public function __construct($name, $lastname, $birthday, $securlvl, $ral, $task, $id, $profit, $department, $employees = []) {
 					parent::__construct($name, $lastname, $birthday, $securlvl, $ral, $task, $id);
@@ -153,10 +144,17 @@
 				}
 				public function setEmployees($employees) {
 					if (empty($employees)) {
-						throw new Exception('must be present at least one employee');
+						throw new Exception('Employees: must be present at least one employee');
 					}
 					$this -> employees = $employees;
 				}
+				public function setSecurLvl($securlvl) {
+					if($securlvl < 5 || $securlvl > 10){
+						throw new Exception('Security level: must be a number between 1 and 5');
+					}
+					$this -> securlvl = $securlvl;
+				}
+
 
 				public function __toString() {
 					return parent::__toString() . '<br>'
@@ -179,15 +177,31 @@
 				}
 			}
 
-			// Boss try
+			// Employee try
 			try {
-				$bss = new Boss('Boss', 'Prova', '10.03.1986', '123', 100000, 'Task', 'Id', 'Profit', 'Marketing', []);
-				echo $bss . '<br><br>';
+				$empl = new Employee('Employee', 'Prova', '06.11.1995', '123', 10, 'Task', 'Id');
+				echo $empl . '<br><br>';
 			} catch (Exception $e) {
-				echo 'Employees not valid <br>' . $e->getMessage() . '<br><br>';
+				echo 'Employee not valid <br>' . $e->getMessage() . '<br><br>';
 			}
 
-			$boss = new Boss('Luigi', 'Verdi', '10.03.1986', '123', 99999, 'Task', 'Id', 'Profit', 'Marketing', [$employee1, $employee2, $employee3]);
+			$employee1 = new Employee('Rita', 'Rossi', '01.01.1990', 1, 12000, 'Task', 'Id');
+			$employee2 = new Employee('Link', 'Smith', '27.10.1987', 2, 15500, 'Task', 'Id');
+			$employee3 = new Employee('Retsuko', 'Aggre', '06.11.1995', 3, 10000, 'Task', 'Id');
+
+			echo $employee1 . '<br><br>'
+			. $employee2 . '<br><br>'
+			. $employee3 . '<br><br>';
+
+			// Boss try
+			try {
+				$bss = new Boss('Boss', 'Prova', '10.03.1986', 9, 100000, 'Task', 'Id', 'Profit', 'Marketing', []);
+				echo $bss . '<br><br>';
+			} catch (Exception $e) {
+				echo 'Boss not valid <br>' . $e->getMessage() . '<br><br>';
+			}
+
+			$boss = new Boss('Luigi', 'Verdi', '10.03.1986', 9, 99999, 'Task', 'Id', 'Profit', 'Marketing', [$employee1, $employee2, $employee3]);
 
 			echo $boss . '<br><br>';
 
